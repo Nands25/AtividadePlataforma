@@ -18,7 +18,11 @@ public class GameManager : MonoBehaviour
     }
 
     public object LoadScene { get; set; }
-
+    
+    private void Start()
+    {
+        StartCoroutine(LoadSplashScene());
+    }
     private void Awake() 
     {
         if (instance == null)
@@ -37,8 +41,7 @@ public class GameManager : MonoBehaviour
         instance = FindObjectOfType<GameManager>();
         if (instance == null)
         {
-            GameObject gameObj = new GameObject(); 
-            gameObj.name = "Singleton"; 
+            GameObject gameObj = new GameObject("GameManager"); 
             instance = gameObj.AddComponent<GameManager>(); 
             DontDestroyOnLoad(gameObj); 
         }
@@ -46,13 +49,14 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator LoadSplashScene() 
     {
-        SceneManager.LoadScene("Splash", LoadSceneMode.Additive);
+        // Carrega a Splash como única cena
+        SceneManager.LoadScene("Splash");
 
+        // Espera 2 segundos
         yield return new WaitForSeconds(2f);
 
+        // Carrega o menu principal
         SceneManager.LoadScene("MainMenu");
-
-        SceneManager.UnloadSceneAsync("Splash");
     }
 
     public void LoadScene1(string sceneName)
